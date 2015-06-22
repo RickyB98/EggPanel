@@ -1,3 +1,38 @@
+<?php
+
+define("EGGPANEL", true);
+
+$page = isset($_GET['page']) ? strtolower($_GET['page']) : "";
+
+switch ($page) {
+  case '':
+  case 'index':
+    $title = "EggPanel - Home";
+    $include = "pages/main.php";
+    break;
+  case 'about':
+    $title = "EggPanel - About";
+    $include = "pages/about.php";
+    break;
+  case 'faq':
+    $title = "EggPanel - FAQ";
+    $include = "pages/faq.php";
+    break;
+  case 'downloads':
+    $title = "EggPanel - Downloads";
+    $include = "pages/downloads.php";
+    break;
+  case 'contact':
+    $title = "EggPanel - Contact";
+    $include = "pages/contact.php";
+    break;
+  default:
+    $title = "EggPanel - 404 (Not Found)";
+    $include = "pages/404.php";
+    break;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,11 +40,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="Eggdrop Panel - EggdropÃ's graphical interface">
+    <meta name="description" content="Eggdrop Panel - Eggdrop's graphical interface">
     <meta name="author" content="Riccardo Bello">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>EggPanel - Home</title>
+    <title><?php echo $title; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -36,28 +71,25 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">EggPanel</a>
+            <a class="navbar-brand" href="index.php">EggPanel</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="downloads.html">Downloads</a></li>
-              <li><a href="contact.php">Contact</a></li>
+              <li <?php if (in_array($page, array('', 'index'))) echo "class=\"active\""; ?>><a href="index.php">Home</a></li>
+              <li <?php if ($page === "about") echo "class=\"active\""; ?>><a href="?page=about">About</a></li>
+              <li <?php if ($page === "faq") echo "class=\"active\""; ?>><a href="?page=faq">FAQ</a></li>
+              <li <?php if ($page === "downloads") echo "class=\"active\""; ?>><a href="?page=downloads">Downloads</a></li>
+              <li <?php if ($page === "contact") echo "class=\"active\""; ?>><a href="?page=contact">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="dashboard/">Dashboard</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
 
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>EggPanel</h1>
-        <p><span class="text-danger">Important!</span> This project is still a BETA. If you wish to contribute, feel free to contact RickyB98 at bello dot a at hotmail dot it.</p>
-        <p>The aim of this project is to create a simple and flexible GUI for the famous IRC bot, <a href="http://eggheads.org/">Eggdrop</a>.</p>
-        <p>
-          <a class="btn btn-lg btn-primary btn-success" href="../../components/#navbar" role="button">Sign up &raquo;</a>
-        </p>
-      </div>
+      <?php include $include; ?>
 
     </div> <!-- /container -->
 
