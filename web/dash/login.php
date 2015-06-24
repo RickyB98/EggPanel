@@ -3,7 +3,6 @@
       header("Location: /dashboard/");
       exit;
   }
-  loadSettings();
   // Authentication
   $failed = false;
   if (isset($_POST['sent'])) {

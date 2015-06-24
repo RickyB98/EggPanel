@@ -1,5 +1,4 @@
 <?php
-    loadSettings();
     if (isset($_GET['logout'])) {
         unset($_SESSION['login']);
         unset($_SESSION['username']);

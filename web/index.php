@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-include "global.php";
+require "global.php";
   if (preg_match("/^\/?$/i", $_SERVER['REQUEST_URI'])) {
     $page = "index";
     include "frontend/index.php";
