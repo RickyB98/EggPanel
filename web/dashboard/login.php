@@ -1,8 +1,44 @@
 <?php
-    if (isset($_SESSION['login'])) {
+  session_start();
+  if (isset($_SESSION['login'])) {
+      header("Location: index.php");
+      exit;
+  }
+  // Settings
+  $db['host'] = "localhost"; // address of the mysql database
+  $db['port'] = ""; // leave blank for default
+  $db['user'] = "webegg"; // mysql user
+  $db['pass'] = "DFjdhFsWLv4tTeCH"; // mysql password
+  $db['database'] = "webegg"; // database name
+
+  // Authentication
+  $failed = false;
+  if (isset($_POST['sent'])) {
+    if (!empty($db['port'])) {
+      $dsn = "mysql:dbname=".$db['database'].";host=".$db['host'].";port=".$db['port'];
+    } else {
+      $dsn = "mysql:dbname=".$db['database'].";host=".$db['host'];
+    }
+    $conn = new PDO($dsn, $db['user'], $db['pass']);
+    $prep = $conn->prepare("SELECT * FROM users WHERE name=:username");
+    $prep->bindValue(":username", $_POST['username'], PDO::PARAM_STR);
+    $prep->execute();
+    $res = $prep->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($res)) {
+      $failed = true;
+    } else {
+      $pass = $res[0]['password_hash'];
+      if (password_verify($_POST['password'], $pass)) {
+        $_SESSION['user'] = $res[0]['name'];
+        $_SESSION['user_id'] = $res[0]['id'];
+        $_SESSION['login'] = true;
         header("Location: index.php");
         exit;
+      } else {
+        $failed = true;
+      }
     }
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,10 +69,13 @@
     <body>
         
         <div class="container">
-            
-            <form class="form-signin">
+            <?php if ($failed) { ?>
+<h1>Failed</h1>
+            <?php } ?> 
+            <form action="login.php" method="post" class="form-signin">
+                <input type="hidden" name="sent" value="1">
                 <h2 class="form-signin-heading">Please sign in</h2>
-                <label for="username" class="sr-only">Email address</label>
+                <label for="username" class="sr-only">Username</label>
                 <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
                     <label for="password" class="sr-only">Password</label>
                     <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>

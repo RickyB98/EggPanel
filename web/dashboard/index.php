@@ -61,9 +61,13 @@
                     <a class="navbar-brand" href="index.php">EggPanel</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <form action="index.php?logout" method="get" class="navbar-form navbar-right">
+                   <form action="index.php" method="get" class="navbar-form navbar-right">
+                        <input type="hidden" name="logout">
                         <button type="submit" class="btn btn-default">Logout</button>
                     </form>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li><a>Welcome back, <?php echo htmlspecialchars($_SESSION['user']); ?>!</a></li>
+                    </ul> 
                 </div>
             </div>
         </nav>
