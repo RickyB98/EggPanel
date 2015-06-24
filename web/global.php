@@ -1,6 +1,6 @@
 <?php
 session_start();
-function loadSettings($file = "../settings.php") {
+$file = "settings.php";
   if (!file_exists($file)) {
     die("No settings file found.");
   }
@@ -25,4 +25,4 @@ function loadSettings($file = "../settings.php") {
   } else {
     return true;
   }
-}
+

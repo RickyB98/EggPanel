@@ -1,26 +1,28 @@
 <?php
-    include "../global.php";
-    loadSettings();
-    if (!isset($_SESSION['login'])) {
-        header("Location: login.php");
-        exit;
-    }
     if (isset($_GET['logout'])) {
         unset($_SESSION['login']);
         unset($_SESSION['username']);
-        header("Location: login.php?logout");
+        header("Location: /dashboard/login");
         exit;
     }
-    $page = isset($_GET['page']) ? strtolower($_GET['page']) : "";
+    if ($page === 'login') {
+      include "dash/login.php";
+      exit;
+    }
+    if (!isset($_SESSION['login'])) {
+        header("Location: /dashboard/login");
+        exit;
+    }
+    $include = "dash/pages/";
     switch ($page) {
         case '':
         case 'index':
             $title = "EggPanel - Dashboard";
-            $include = "pages/main.php";
+            $include .= "main.php";
             break;
         default:
             $title = "EggPanel - 404 (Not found)";
-            $include = "pages/404.php";
+            $include .= "404.php";
             break;
     }
 ?>
@@ -38,10 +40,10 @@
         <title><?php echo $title; ?></title>
         
         <!-- Bootstrap core CSS -->
-        <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/css/bootstrap.min.css" rel="stylesheet"/>
         
         <!-- Custom styles for this template -->
-        <link href="../css/dashboard.css" rel="stylesheet"/>
+        <link href="/css/dashboard.css" rel="stylesheet"/>
         
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>

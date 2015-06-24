@@ -2,14 +2,14 @@
 header("Content-type: application/json");
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-
+include "global.php";
 if (!isset($_POST['key']) || !isset($_POST['command'])) {
   $json['code'] = 300;
   $json['message'] = "Missing parameter.";
   echo json_encode($json);
   exit;
 }
-
+loadSettings();
 // Settings
 $db['host'] = "localhost"; // address of the mysql database
 $db['port'] = ""; // leave blank for default
