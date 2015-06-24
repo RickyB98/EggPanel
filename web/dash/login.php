@@ -1,7 +1,6 @@
 <?php
-  include "../global.php";
   if (isset($_SESSION['login'])) {
-      header("Location: index.php");
+      header("Location: /dashboard/");
       exit;
   }
   loadSettings();
@@ -26,7 +25,7 @@
         $_SESSION['user'] = $res[0]['name'];
         $_SESSION['user_id'] = $res[0]['id'];
         $_SESSION['login'] = true;
-        header("Location: index.php");
+        header("Location: /dashboard/");
         exit;
       } else {
         $failed = true;
@@ -48,10 +47,10 @@
         <title>Signin Template for Bootstrap</title>
         
         <!-- Bootstrap core CSS -->
-        <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/css/bootstrap.min.css" rel="stylesheet"/>
         
         <!-- Custom styles for this template -->
-        <link href="../css/signin.css" rel="stylesheet"/>
+        <link href="/css/signin.css" rel="stylesheet"/>
         
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -66,7 +65,7 @@
             <?php if ($failed) { ?>
 <h1>Failed</h1>
             <?php } ?> 
-            <form action="login.php" method="post" class="form-signin">
+            <form action="/dashboard/login" method="post" class="form-signin">
                 <input type="hidden" name="sent" value="1">
                 <h2 class="form-signin-heading">Please sign in</h2>
                 <label for="username" class="sr-only">Username</label>

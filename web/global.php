@@ -1,6 +1,6 @@
 <?php
 session_start();
-function loadSettings($file = "../settings.php") {
+function loadSettings($file = "settings.php") {
   if (!file_exists($file)) {
     die("No settings file found.");
   }

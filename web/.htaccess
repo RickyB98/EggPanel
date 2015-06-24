@@ -1,0 +1,3 @@
+RewriteEngine On
+DirectoryIndex index.php index.html
+FallbackResource /index.php
