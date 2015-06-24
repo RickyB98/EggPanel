@@ -1,16 +1,10 @@
 <?php
-  session_start();
+  include "../global.php";
   if (isset($_SESSION['login'])) {
       header("Location: index.php");
       exit;
   }
-  // Settings
-  $db['host'] = "localhost"; // address of the mysql database
-  $db['port'] = ""; // leave blank for default
-  $db['user'] = "webegg"; // mysql user
-  $db['pass'] = "DFjdhFsWLv4tTeCH"; // mysql password
-  $db['database'] = "webegg"; // database name
-
+  loadSettings();
   // Authentication
   $failed = false;
   if (isset($_POST['sent'])) {

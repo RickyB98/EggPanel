@@ -1,5 +1,6 @@
 <?php
-    session_start();
+    include "../global.php";
+    loadSettings();
     if (!isset($_SESSION['login'])) {
         header("Location: login.php");
         exit;
