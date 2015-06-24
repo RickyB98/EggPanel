@@ -1,0 +1,9 @@
+<?php
+
+$db['host'] = "localhost"; // address of the mysql database, usually localhost
+$db['port'] = ""; // leave blank for default
+$db['user'] = "databaseUser"; // mysql user
+$db['pass'] = "mySecurePassword"; // mysql password
+$db['database'] = "databaseName"; // database name
+
+// vim: filetype=php
