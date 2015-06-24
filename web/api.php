@@ -9,13 +9,6 @@ if (!isset($_POST['key']) || !isset($_POST['command'])) {
   echo json_encode($json);
   exit;
 }
-loadSettings();
-// Settings
-$db['host'] = "localhost"; // address of the mysql database
-$db['port'] = ""; // leave blank for default
-$db['user'] = "webegg"; // mysql user
-$db['pass'] = "DFjdhFsWLv4tTeCH"; // mysql password
-$db['database'] = "webegg"; // database name
 
 if (!empty($db['port'])) {
   $dsn = "mysql:dbname=".$db['database'].";host=".$db['host'].";port=".$db['port'];
