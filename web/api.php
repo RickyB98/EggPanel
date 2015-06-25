@@ -44,11 +44,15 @@ if (!$found) {
     echo json_encode($json);
     break;
   case 'pickup':
-    if (!isset($_POST['action'])) {
+    if (!isset($_POST['action']) || !isset($_POST['success'])) {
       $json['code'] = 300;
       $json['message'] = "Missing parameter.";
       echo json_encode($json);
       exit;
+    }
+    if (!in_array($_POST['success'], array(0, 1))) {
+      $json['code'] = 305;
+      $json['message'] = "Invalid parameter. 'success' MUST be either 0 or 1.";
     }
     $prep = $conn->prepare("SELECT * FROM actions WHERE bot_id=:bot AND id=:action AND executed=0");
     $prep->bindValue(":bot", $bot, PDO::PARAM_INT);
@@ -61,9 +65,10 @@ if (!$found) {
       echo json_encode($json);
       exit;
     }
-    $prep = $conn->prepare("UPDATE actions SET executed=1, pickup=:time, message=:message WHERE id=:id");
+    $prep = $conn->prepare("UPDATE actions SET executed=1, pickup=:time, success=:success, message=:message WHERE id=:id");
     $prep->bindValue(":time", time(), PDO::PARAM_INT);
     $prep->bindValue(":id", $_POST['action'], PDO::PARAM_INT);
+    $prep->bindValue(":success", $_POST['success'], PDO::PARAM_BOOL);
     if (isset($_POST['message']) && !empty($_POST['message'])) {
       $prep->bindValue(":message", $_POST['message'], PDO::PARAM_STR);
     } else {

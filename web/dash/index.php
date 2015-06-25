@@ -37,6 +37,10 @@
             $title = "EggPanel - Logs";
             $include .= "logs.php";
             break;
+        case 'system':
+            $title = "EggPanel - System operations";
+            $include .= "system.php";
+            break;
         default:
             $title = "EggPanel - 404 (Not found)";
             $include .= "404.php";
@@ -101,7 +105,7 @@
                     <li <?php if ($page === "logs") echo "class=\"active\""; ?>><a href="/dashboard/logs/">Logs</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
-                        <li><a href="">System operations</a></li>
+                        <li <?php if ($page === "system") echo "class=\"active\""; ?>><a href="/dashboard/system/">System operations</a></li>
                         <li><a href="">User management</a></li>
                         <li><a href="">Add user</a></li>
                     </ul>
