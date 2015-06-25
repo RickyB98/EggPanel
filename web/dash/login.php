@@ -6,11 +6,6 @@
   // Authentication
   $failed = false;
   if (isset($_POST['sent'])) {
-    if (!empty($db['port'])) {
-      $dsn = "mysql:dbname=".$db['database'].";host=".$db['host'].";port=".$db['port'];
-    } else {
-      $dsn = "mysql:dbname=".$db['database'].";host=".$db['host'];
-    }
     $conn = new PDO($dsn, $db['user'], $db['pass']);
     $prep = $conn->prepare("SELECT * FROM users WHERE name=:username");
     $prep->bindValue(":username", $_POST['username'], PDO::PARAM_STR);
@@ -24,6 +19,14 @@
         $_SESSION['user'] = $res[0]['name'];
         $_SESSION['user_id'] = $res[0]['id'];
         $_SESSION['login'] = true;
+        $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:userid AND active=1");
+        $prep->bindValue(":userid", $res[0]['id'], PDO::PARAM_INT);
+        $prep->execute();
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+          $_SESSION['botname'] = $results[0]['name'];
+          $_SESSION['bot_id'] = $results[0]['id'];
+        }
         header("Location: /dashboard/");
         exit;
       } else {

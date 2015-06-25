@@ -1,6 +1,4 @@
 <?php
-header("Content-type: text/plain");
-print_r($_SERVER);
 define("EGGPANEL", true);
 $include = "frontend/pages/";
 switch ($page) {

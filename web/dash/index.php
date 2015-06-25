@@ -1,7 +1,8 @@
 <?php
-    if (isset($_GET['logout'])) {
-        unset($_SESSION['login']);
-        unset($_SESSION['username']);
+    if (isset($_POST['logout'])) {
+        /* unset($_SESSION['login']);
+        unset($_SESSION['username']); */
+        session_destroy();
         header("Location: /dashboard/login");
         exit;
     }
@@ -19,6 +20,22 @@
         case 'index':
             $title = "EggPanel - Dashboard";
             $include .= "main.php";
+            break;
+        case 'addbot':
+            $title = "EggPanel - Add bot";
+            $include .= "addbot.php";
+            break;
+        case 'editbot':
+            $title = "EggPanel - Edit bot";
+            $include .= "editbot.php";
+            break;
+        case 'switch':
+            $title = "";
+            $include .= "switch.php";
+            break;
+        case 'logs':
+            $title = "EggPanel - Logs";
+            $include .= "logs.php";
             break;
         default:
             $title = "EggPanel - 404 (Not found)";
@@ -61,15 +78,15 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.php">EggPanel</a>
+                    <a class="navbar-brand" href="/dashboard/">EggPanel</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                   <form action="index.php" method="get" class="navbar-form navbar-right">
+                   <form action="/dashboard/" method="post" class="navbar-form navbar-right">
                         <input type="hidden" name="logout">
                         <button type="submit" class="btn btn-default">Logout</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                      <li><a>Welcome back, <?php echo htmlspecialchars($_SESSION['user']); ?>!</a></li>
+                    <li><a>Welcome back, <?php echo htmlspecialchars($_SESSION['user']); ?>!<?php if (isset($_SESSION['bot_id'])) { ?> (currently operating on <?php echo $_SESSION['botname']; ?>)<?php } ?></a></li>
                     </ul> 
                 </div>
             </div>
@@ -79,19 +96,18 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                        <li class="active"><a href="#">Overview</a></li>
+                    <li <?php if ($page === "index") echo "class=\"active\""; ?>><a href="/dashboard/">Overview</a></li>
+                    <li <?php if ($page === "addbot") echo "class=\"active\""; ?>><a href="/dashboard/addbot/">Add bot</a></li>
+                    <li <?php if ($page === "logs") echo "class=\"active\""; ?>><a href="/dashboard/logs/">Logs</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
-                        <li><a href="">Nav item</a></li>
-                        <li><a href="">Nav item again</a></li>
-                        <li><a href="">One more nav</a></li>
-                        <li><a href="">Another nav item</a></li>
-                        <li><a href="">More navigation</a></li>
+                        <li><a href="">System operations</a></li>
+                        <li><a href="">User management</a></li>
+                        <li><a href="">Add user</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
-                        <li><a href="">Nav item again</a></li>
-                        <li><a href="">One more nav</a></li>
-                        <li><a href="">Another nav item</a></li>
+                        <li><a href="">Channel list</a></li>
+                        <li><a href="">Join channel</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -104,8 +120,8 @@
          ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+        <script src="/js/ie10-viewport-bug-workaround.js"></script>
     </body>
 </html>
