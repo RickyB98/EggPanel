@@ -2,7 +2,6 @@
     <h1>Overview</h1>
 </div>
 <?php
-  $conn = new PDO($dsn, $db['user'], $db['pass']);
   $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:user");
   $prep->bindValue(":user", $_SESSION['user_id'], PDO::PARAM_INT);
   $prep->execute();
@@ -15,7 +14,8 @@
 <caption>My bots - <a href="/dashboard/addbot">Add a new bot.</a></caption>
 <thead>
 <tr>
-<th class="col-xs-8">Bot name</th>
+<th class="col-xs-4">Bot name</th>
+<th class="col-xs-4">Status</th>
 <th class="col-xs-4">Actions</th>
 </tr>
 </thead>
@@ -28,6 +28,11 @@
       } else {
         echo "<tr>";
         echo "<td><a href=\"/dashboard/switch/".$res['id']."/\">".$res['name']."</a></td>";
+      }
+      if ($status[$res['id']]) {
+        echo "<td><span style=\"color:green\"><strong>ONLINE</strong></span>";
+      } else {
+        echo "<td><span style=\"color:red\"><strong>OFFLINE</strong></span>";
       }
       echo "<td>[<a href=\"/dashboard/editbot/".$res['id']."/\">Edit</a>] [<a href=\"/dashboard/removebot/".$res['id']."/\">Remove</a>]</td>";
       echo "</tr>";

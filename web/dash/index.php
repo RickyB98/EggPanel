@@ -46,6 +46,26 @@
             $include .= "404.php";
             break;
     }
+    $conn = new PDO($dsn, $db['user'], $db['pass']);
+    $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:user");
+    $prep->bindValue(":user", $_SESSION['user_id'], PDO::PARAM_INT);
+    $prep->execute();
+    foreach ($prep->fetchAll(PDO::FETCH_ASSOC) as $bot) {
+      $prep = $conn->prepare("SELECT last FROM requests WHERE bot_id=:bot");
+      $prep->bindValue(":bot", $bot['id'], PDO::PARAM_INT);
+      $prep->execute();
+      $reqs = $prep->fetchAll(PDO::FETCH_ASSOC);
+      if (empty($reqs)) {
+        $status[$bot['id']] = false;
+      } else {
+        $req = $reqs[0];
+        if ((time() - $req['last']) > 30) {
+          $status[$bot['id']] = false;
+        } else {
+          $status[$bot['id']] = true;
+        }
+      }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

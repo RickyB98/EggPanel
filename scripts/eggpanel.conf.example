@@ -1,0 +1,4 @@
+set eggpanel(api) "https://website.com/api.php" ;# set this to the website you decided to use for your web interface
+set eggpanel(key) "qwertyuiopasdfghjkl" ;# set this to your bot's API key
+
+# You're all set. :)

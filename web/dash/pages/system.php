@@ -3,7 +3,6 @@ if (isset($_POST['sent'])) {
   if (!isset($_SESSION['bot_id'])) {
     $nobot = true;
   } else {
-    $conn = new PDO($dsn, $db['user'], $db['pass']);
     $prep = $conn->prepare("INSERT INTO actions (id, bot_id, command, arguments, timestamp, executed, pickup, success, message) VALUES (NULL, :botid, :command, NULL, :time, 0, NULL, NULL, NULL)");
     switch (strtolower($_POST['submit'])) {
       case 'rehash':

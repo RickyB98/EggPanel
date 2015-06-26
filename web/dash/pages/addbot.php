@@ -1,6 +1,5 @@
 <?php
   if (isset($_POST['sent'])) {
-    $conn = new PDO($dsn, $db['user'], $db['pass']);
     $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:userid AND name=:botname");
     $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
     $prep->bindValue(":botname", $_POST['botname'], PDO::PARAM_STR);

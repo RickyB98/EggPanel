@@ -1,6 +1,5 @@
 <?php
   // arg
-  $conn = new PDO($dsn, $db['user'], $db['pass']);
   $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:userid AND id=:botid");
   $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
   $prep->bindValue(":botid", $arg, PDO::PARAM_INT);

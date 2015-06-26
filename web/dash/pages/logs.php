@@ -1,5 +1,4 @@
 <?php
-$conn = new PDO($dsn, $db['user'], $db['pass']);
 if (!isset($_SESSION['bot_id'])) {
   $nobot = true;
 } else {

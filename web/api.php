@@ -33,6 +33,21 @@ if (!$found) {
   echo json_encode($json);
   exit;
 } else {
+  // bot is online, regardless of the syntax
+  $prep = $conn->prepare("SELECT * FROM requests WHERE bot_id=:bot");
+  $prep->bindValue(":bot", $bot, PDO::PARAM_INT);
+  $prep->execute();
+  $reqs = $prep->fetchAll(PDO::FETCH_ASSOC);
+  if (empty($reqs)) {
+    $prep = $conn->prepare("INSERT INTO requests (id, bot_id, last) VALUES (NULL, :bot, :time)");
+  } else {
+    $prep = $conn->prepare("UPDATE requests SET last=:time WHERE bot_id=:bot");
+  }
+  $prep->bindValue(":bot", $bot, PDO::PARAM_INT);
+  $prep->bindValue(":time", time(), PDO::PARAM_INT);
+  $prep->execute();
+
+  // parse the command
   switch (strtolower($_POST['command'])) {
   case 'fetch':
     $prep = $conn->prepare("SELECT id, command, arguments FROM actions WHERE bot_id=:bot AND executed=0");
