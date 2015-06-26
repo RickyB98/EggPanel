@@ -14,11 +14,13 @@ The idea is to create a connection between a MySQL database, an Eggdrop bot and 
 <p>The user can generate a key for its bot(s) from the web interface, which is needed to access the API. Said key is encrypted and saved in the database.</p>
 <p>No direct connection happens between the bot and the database. Only the API and the website can access the database.</p>
 <p>This project is still in development. Though the API is completed, there are tons of sections which still need developing.</p>
+<p>As of Friday, 26 June 2015, the system works as expected. System commands are already implemented (rehash, restart, die), the bots running the script pick them up correctly and execute them. All that's left is implementing the other commands.</p>
 <p>Here's a todo list:
 <ul>
-<li>Develop the dashboard</li>
-<li>User registration and login</li>
-<li>...</li>
+<li>Complete the dashboard</li>
+<li>User registration</li>
+<li>Give SQL CREATE statement</li>
+<li>Frontend writing</li>
 </ul>
 </p>
 <p>If you wish to contribute and make this happen, feel free to fork the repository and send pull requests and issues.</p>
