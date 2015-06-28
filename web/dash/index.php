@@ -41,6 +41,10 @@
             $title = "EggPanel - System operations";
             $include .= "system.php";
             break;
+        case 'verify':
+          $title = "EggPanel - Email verification";
+          $include .= "verify.php";
+          break;
         default:
             $title = "EggPanel - 404 (Not found)";
             $include .= "404.php";
@@ -135,6 +139,16 @@
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<?php
+    $prep = $conn->prepare("SELECT verified FROM users WHERE id=:userid");
+    $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
+    $prep->execute();    
+    $res = $prep->fetchAll(PDO::FETCH_ASSOC);
+    $res = $res[0];
+    $verified = is_null($res['verified']) ? false : true;
+    if (!$verified) { ?>
+<div id="notverified" class="alert alert-warning" role="alert"><strong>You haven't verified your email yet.</strong> <a href="/dashboard/verify/">Click here</a> to verify your email address.</div>
+<?php } ?>
                     <?php include $include; ?>
                 </div>
             </div>
@@ -144,6 +158,11 @@
          ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<?php if ($page === 'verify' && isset($success) && $success) { ?>
+      <script type="text/javascript">
+$(function e () { $('#notverified').hide() } )
+      </script>
+<?php } ?>
         <script src="/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="/js/ie10-viewport-bug-workaround.js"></script>

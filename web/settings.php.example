@@ -1,9 +1,19 @@
 <?php
 
-$db['host'] = "localhost"; // address of the mysql database, usually localhost
-$db['port'] = ""; // leave blank for default
-$db['user'] = "databaseUser"; // mysql user
-$db['pass'] = "mySecurePassword"; // mysql password
-$db['database'] = "databaseName"; // database name
+// EggPanel - Settings
+
+$db['host'] = "localhost";                      // address of the mysql database
+$db['port'] = "";                               // leave blank for default
+$db['user'] = "root";                           // mysql user
+$db['pass'] = "securePassword";                 // mysql password
+$db['database'] = "myDatabase";                 // database name
+
+$mail['smtp'] = "smtp.example.com";             // mandatory
+$mail['port'] = 587;                            // 25 is default for plain connections, 587 is default for tls and 465 for ssl
+$mail['encryption'] = "tls";                    // leave blank to use plain connection; can be 'tls' or 'ssl'
+$mail['username'] = "email@example.com";        // leave blank if your server doesn't need authentication
+$mail['password'] = "secretPassword";           // like above
+$mail['from'] = "lame@example.com";             // email sender
+$mail['name'] = "My Name";                      // sender name
 
 // vim: filetype=php

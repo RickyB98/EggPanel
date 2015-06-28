@@ -1,5 +1,5 @@
 <?php
-  if (isset($_POST['sent'])) {
+  if (isset($_POST['sent']) && $verified) {
     $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:userid AND name=:botname");
     $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
     $prep->bindValue(":botname", $_POST['botname'], PDO::PARAM_STR);
@@ -21,7 +21,10 @@
 <div class="page-header">
 <h1>Add bot</h1>
 </div>
-<?php if (isset($existing)) { ?>
+<?php if (!$verified) { ?>
+<div class="alert alert-danger" role="alert"><strong>Your email is not verified.</strong> You won't be able to create a bot until you verify your email.</div>
+<?php } else {
+if (isset($existing)) { ?>
 <div class="alert alert-danger alert-dismissible" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <strong>Couldn't create the bot.</strong> There's already a bot known by that name.
@@ -47,3 +50,4 @@
     </div>
   </div>
 </form>
+<?php } ?>

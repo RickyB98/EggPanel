@@ -23,6 +23,10 @@ switch ($page) {
     $title = "EggPanel - Contact";
     $include .= "contact.php";
     break;
+  case 'signup':
+    $title = "EggPanel - Sign up";
+    $include .= "signup.php";
+    break;
   default:
     $title = "EggPanel - 404 (Not Found)";
     $include .= "404.php";
@@ -80,6 +84,7 @@ switch ($page) {
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="/dashboard/">Dashboard</a></li>
+              <li <?php if ($page === "signup") echo "class=\"active\""; ?>><a href="/signup/">Sign up</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
