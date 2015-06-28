@@ -4,7 +4,6 @@ package require json
 source scripts/eggpanel.conf
 
 proc eggpanel:loop {args} {
-  after 5000 eggpanel:loop    ;# schedule the proc to be executed again after 5 seconds
   global eggpanel
   ::http::register https 443 [list ::tls::socket -tls1 1]
   set token [::http::geturl $eggpanel(api) -query [::http::formatQuery key $eggpanel(key) command fetch]]
@@ -12,33 +11,27 @@ proc eggpanel:loop {args} {
   set json [::json::json2dict $data]
   # debug purposes only
   #putlog $json
-  foreach {1 2} $json {
-    if {$1 eq "code"} {
-      switch -nocase $2 {
-        200 {}
-        default {}
-      }
-    } elseif {$1 eq "message"} {
-      foreach el $2 {
-        foreach {3 4} $el {
-          switch -nocase $3 {
-            id {set action_id $4}
-            command {set command $4}
-            arguments {set arg $4}
-            default {}
-          }
+  #
+  #
+  if {[dict exists $json code]} {
+    switch -nocase -- [dict get $json code] {
+      200 {}
+      default {}
+    }
+  }
+  if {[dict exists $json message]} {
+    foreach msg [dict get $json message] {
+      dict with msg {
+        switch -nocase -- $command {
+          rehash {eggpanel:rehash $id}
+          restart {eggpanel:restart $id}
+          die {eggpanel:die $id}
+          default {}
         }
       }
     }
   }
-  if {[info exists command]} {
-    switch -nocase -- $command {
-      rehash {eggpanel:rehash $action_id}
-      restart {eggpanel:restart $action_id}
-      die {eggpanel:die $action_id}
-      default {}
-    }
-  }
+  after 5000 eggpanel:loop    ;# schedule the proc to be executed again after 5 seconds
 }
 proc eggpanel:pickup {id success {msg {}}} {
   global eggpanel
