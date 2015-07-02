@@ -26,6 +26,9 @@ switch ($page) {
   case 'signup':
     $title = "EggPanel - Sign up";
     $include .= "signup.php";
+    if (isset($recaptcha['enabled']) && $recaptcha['enabled']) {
+      $showRC = true;
+    }
     break;
   default:
     $title = "EggPanel - 404 (Not Found)";
@@ -58,6 +61,9 @@ switch ($page) {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <?php if (isset($showRC)) { ?>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <?php } ?>
   </head>
 
   <body>
@@ -72,7 +78,7 @@ switch ($page) {
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.php">EggPanel</a>
+            <a class="navbar-brand" href="/">EggPanel</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -100,8 +106,8 @@ switch ($page) {
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>

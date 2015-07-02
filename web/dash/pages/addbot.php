@@ -1,5 +1,13 @@
 <?php
-  if (isset($_POST['sent']) && $verified) {
+  $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:userid");
+  $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
+  $prep->execute();
+  if (count($prep->fetchAll(PDO::FETCH_ASSOC)) >= 5) {
+    $limitreached = true;
+  } else {
+    $limitreached = false;
+  }
+  if (isset($_POST['sent']) && $verified && !$limitreached) {
     $prep = $conn->prepare("SELECT * FROM bots WHERE user_id=:userid AND name=:botname");
     $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
     $prep->bindValue(":botname", $_POST['botname'], PDO::PARAM_STR);
@@ -23,6 +31,8 @@
 </div>
 <?php if (!$verified) { ?>
 <div class="alert alert-danger" role="alert"><strong>Your email is not verified.</strong> You won't be able to create a bot until you verify your email.</div>
+<?php } elseif ($limitreached) { ?>
+<div class="alert alert-danger" role="alert"><strong>Sorry, you reached the limit of 5 bots.</strong></div>
 <?php } else {
 if (isset($existing)) { ?>
 <div class="alert alert-danger alert-dismissible" role="alert">

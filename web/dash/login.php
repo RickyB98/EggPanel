@@ -46,7 +46,7 @@
         <meta name="author" content=""/>
         <link rel="icon" href="../favicon.ico"/>
         
-        <title>Signin Template for Bootstrap</title>
+        <title>EggPanel - Login</title>
         
         <!-- Bootstrap core CSS -->
         <link href="/css/bootstrap.min.css" rel="stylesheet"/>

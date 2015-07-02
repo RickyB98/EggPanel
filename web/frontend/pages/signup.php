@@ -1,5 +1,26 @@
 <?php
   if (isset($_POST['sent'])) {
+    if (isset($showRC)) {
+      $url = 'https://www.google.com/recaptcha/api/siteverify';
+      $data = array('secret' => $recaptcha['secret'], 'response' => $_POST['g-recaptcha-response']);
+      $options = array(
+        'http' => array(
+          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+          'method'  => 'POST',
+          'content' => http_build_query($data),
+        ),
+      );
+      $context  = stream_context_create($options);
+      $result = file_get_contents($url, false, $context);
+      $captcha_json = json_decode($result, 1);
+      if (!$captcha_json['success']) {
+        $failedcaptcha = true;
+      } else {
+        $failedcaptcha = false;
+      }
+    } else {
+        $failedcaptcha = false;
+    }
     if ($_POST['password'] != $_POST['verpassword']) {
       $failedver = true;
     } elseif (!preg_match("/\S+@\S+\.\S+/i", $_POST['email'])) {
@@ -16,7 +37,7 @@
           break;
         }
       }
-      if (!isset($existingemail) && !isset($existinguser)) {
+      if (!isset($existingemail) && !isset($existinguser) && !$failedcaptcha) {
         // proceed to account creation
         $prep = $conn->prepare("INSERT INTO users (id, name, password_hash, email, token_hash, verified) VALUES (NULL, :name, :passhash, :email, :tokenhash, NULL)");
         $prep->bindValue(":name", $_POST['username'], PDO::PARAM_STR);
@@ -75,8 +96,10 @@ EOT;
 <h1>Sign up</h1>
 </div>
 <?php if (isset($_POST['sent'])) {
-if (!isset($_POST['password']) || !isset($_POST['verpassword']) || !isset($_POST['username']) || !isset($_POST['email'])) { ?>
-
+if (empty($_POST['password']) || empty($_POST['verpassword']) || empty($_POST['username']) || empty($_POST['email'])) { ?>
+<div class="alert alert-danger" role="alert"><strong>Missing parameter.</strong> All fields are mandatory.</div>
+<?php } elseif ($failedcaptcha) { ?>
+<div class="alert alert-danger" role="alert"><strong>You failed human verification.</strong> Please click on the captcha box before submitting.</div>
 <?php } elseif (isset($failedver)) { ?>
 <div class="alert alert-danger" role="alert"><strong>You provided two different passwords.</strong> Please make sure you type the same password in both fields.</div>
 <?php } elseif (isset($invalidemail)) { ?>
@@ -117,7 +140,15 @@ if (!isset($success)) { ?>
     <div class="col-sm-10">
       <input type="password" class="form-control" name="verpassword" id="verpassword" placeholder="Please enter the same password to verify.">
     </div>
-  </div> 
+  </div>
+<?php if (isset($showRC)) { ?>
+  <div class="form-group">
+    <label for="captcha" class="col-sm-2 control-label">Human verification</label>
+    <div class="col-sm-10">
+      <div class="g-recaptcha" id="captcha" data-sitekey="<?php echo $recaptcha['public']; ?>"></div> 
+    </div>
+  </div>
+<?php } ?>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-success">Sign up</button>

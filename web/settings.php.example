@@ -16,4 +16,8 @@ $mail['password'] = "secretPassword";           // like above
 $mail['from'] = "lame@example.com";             // email sender
 $mail['name'] = "My Name";                      // sender name
 
+$recaptcha['enabled'] = 0;                      // Recaptcha human verification. To enable it, configure it on google.
+$recaptcha['public'] = "";                      // Recaptcha public key retreived on google.
+$recaptcha['secret'] = "";                      // Recaptcha secret key retreived on google.
+
 // vim: filetype=php
