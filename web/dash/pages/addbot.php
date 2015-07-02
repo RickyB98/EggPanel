@@ -15,14 +15,17 @@
     $res = $prep->fetchAll(PDO::FETCH_ASSOC);
     if (!empty($res)) {
       $existing = true;      
-    }
-    $prep = $conn->prepare("INSERT INTO bots (id, name, user_id, active, key_hash) VALUES (NULL, :name, :userid, 0, :keyhash)");
-    $prep->bindValue(":name", $_POST['botname'], PDO::PARAM_STR);
-    $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
-    $key = generateRandomString(20);
-    $prep->bindValue(":keyhash", password_hash($key, PASSWORD_DEFAULT), PDO::PARAM_STR);
-    if ($prep->execute()) {
-      $created = true;
+    } else {
+      $prep = $conn->prepare("INSERT INTO bots (id, name, user_id, active, key_hash) VALUES (NULL, :name, :userid, 1, :keyhash)");
+      $prep->bindValue(":name", $_POST['botname'], PDO::PARAM_STR);
+      $prep->bindValue(":userid", $_SESSION['user_id'], PDO::PARAM_INT);
+      $key = generateRandomString(20);
+      $prep->bindValue(":keyhash", password_hash($key, PASSWORD_DEFAULT), PDO::PARAM_STR);
+      if ($prep->execute()) {
+        $created = true;
+      } else {
+        $created = false;
+      }
     }
   }
 ?>
@@ -40,12 +43,15 @@ if (isset($existing)) { ?>
   <strong>Couldn't create the bot.</strong> There's already a bot known by that name.
 </div>
 <?php } ?>
-<?php if (isset($created)) { ?>
+<?php if (isset($created)) {
+if ($created) { ?>
 <div class="alert alert-success alert-dismissible" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <strong>Success!</strong> Here's the API key, keep it safe: <strong><?php echo $key; ?></strong> - You're not going to see this key again. If you lose it, you'll have to generate a new one.
 </div>
-<?php } ?>
+<?php } else { ?>
+
+<?php } } ?>
 <form action="/dashboard/addbot/" method="post" class="form-horizontal">
   <input type="hidden" name="sent" value="1">
   <div class="form-group">
