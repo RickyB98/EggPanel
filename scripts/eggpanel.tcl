@@ -8,6 +8,7 @@ proc eggpanel:loop {args} {
   ::http::register https 443 [list ::tls::socket -tls1 1]
   set token [::http::geturl $eggpanel(api) -query [::http::formatQuery key $eggpanel(key) command fetch]]
   set data [::http::data $token]
+  ::http::cleanup $token
   set json [::json::json2dict $data]
   # debug purposes only
   #putlog $json
@@ -37,6 +38,7 @@ proc eggpanel:pickup {id success {msg {}}} {
   global eggpanel
   ::http::register https 443 [list ::tls::socket -tls1 1]
   set token [::http::geturl $eggpanel(api) -query [::http::formatQuery key $eggpanel(key) command pickup action $id success $success message $msg]]
+  ::http::cleanup $token
 }
 proc eggpanel:rehash {id} {
   after 1000 rehash
