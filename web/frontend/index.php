@@ -46,6 +46,10 @@ switch ($page) {
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Eggdrop Panel - Eggdrop's graphical interface">
     <meta name="author" content="Riccardo Bello">
+    <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <meta itemprop="name" content="Riccardo Bello"></span>
+    <meta itemprop="softwareVersion" content="1.0">
+    <meta itemprop="url" content="https://eggpanel.tk/">
     <link rel="icon" href="../../favicon.ico">
 
     <title><?php echo $title; ?></title>
@@ -67,9 +71,9 @@ switch ($page) {
   </head>
 
   <body>
-    <div class="container">
+    <div itemscope itemtype="http://schema.org/SoftwareApplication" class="container">
       <!-- Static navbar -->
-      <nav class="navbar navbar-default">
+      <nav itemscope itemtype="http://schema.org/SoftwareApplication" class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -78,14 +82,14 @@ switch ($page) {
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">EggPanel</a>
+            <a itemscope itemtype="http://schema.org/SoftwareApplication" class="navbar-brand" href="/"><span itemprop="name">EggPanel</span></a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li <?php if (in_array($page, array('', 'index'))) echo "class=\"active\""; ?>><a href="/">Home</a></li>
               <li <?php if ($page === "about") echo "class=\"active\""; ?>><a href="/about">About</a></li>
               <li <?php if ($page === "faq") echo "class=\"active\""; ?>><a href="/faq">FAQ</a></li>
-              <li <?php if ($page === "downloads") echo "class=\"active\""; ?>><a href="/downloads">Downloads</a></li>
+              <li <?php if ($page === "downloads") echo "class=\"active\""; ?>><a itemprop="downloadUrl" href="/downloads">Downloads</a></li>
               <li <?php if ($page === "contact") echo "class=\"active\""; ?>><a href="/contact">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

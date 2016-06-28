@@ -34,6 +34,33 @@ proc eggpanel:loop {args} {
   }
   after 5000 eggpanel:loop    ;# schedule the proc to be executed again after 5 seconds
 }
+proc eggpanel:userlist {args} {
+  global eggpanel
+  set users ""
+  set bots ""
+  set userinfo ""
+  set botinfo ""
+  foreach user [userlist] {
+    if {$user in [botlist]} {
+      lappend bots $user
+    } else {
+      lappend users $user
+    }
+    foreach u $users {
+      lappend userinfo [dict create name $u flags [chattr $u] hosts [getuser $u HOSTS]]
+    }
+    foreach b $bots {
+      lappend botinfo [dict create name $b flags [chattr $b] botflags [getuser $u BOTFL] botaddr [getuser $u BOTADDR]]
+    }
+    set final [dict create users $userinfo bots $botinfo]
+    set json [compile_json {dict * {list dict}} $final]
+    # send to api server
+    after 10000 eggpanel:userlist
+  }
+}
+proc eggpanel:chanlist {args} {
+
+}
 proc eggpanel:pickup {id success {msg {}}} {
   global eggpanel
   ::http::register https 443 [list ::tls::socket -tls1 1]
@@ -54,6 +81,8 @@ proc eggpanel:die {id} {
 }
 if {![info exists eggpanel(start)]} {
   eggpanel:loop
+  eggpanel:userlist
+  eggpanel:chanlist
   set eggpanel(start) 1
 }
 
